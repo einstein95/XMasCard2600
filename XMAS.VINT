@@ -1,0 +1,24 @@
+* XMAS.VINT
+********************************
+                         ;
+VINT
+         LDA  TIMER
+         BMI  VINT
+                         ;
+         STA  ATWAIT
+         LDA  #2
+         STA  ATWAIT
+         STA  ATBLNK
+         STA  ATWAIT
+         STA  ATWAIT
+         STA  ATWAIT
+         STA  ATSYNC
+         STA  ATWAIT
+         STA  ATWAIT
+         LDA  #0
+         STA  ATWAIT
+         STA  ATSYNC
+                         ;
+         LDA  #TOPTIM
+         STA  TIME64
+                         ;

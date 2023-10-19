@@ -1,0 +1,12 @@
+*/ XMAS.BOTVI
+********************************
+                         ;
+BOTVI
+         LDA  #BOTTIM
+         STA  TIME64
+                         ;
+ENDBOT
+         LDA  TIMER
+         BMI  ENDBOT
+         JMP  VINT
+                         ;

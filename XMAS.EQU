@@ -1,0 +1,32 @@
+*/ XMAS.EQU
+********************************
+                         ;
+***********
+*  R A M  *
+***********
+FRAMEL   =    $80
+FRAMEH   =    $81
+                         ;
+TEMP1    =    $82
+TEMP2    =    $83
+TEMP3    =    $84
+                         ;
+ADUR     =    $90
+BDUR     =    $91
+MDUR     =    $92
+AIDX     =    $93
+BIDX     =    $94
+MIDX     =    $95
+                         ;
+                         ;
+PD100K   =    $E0
+PD10K    =    $E2
+PD1K     =    $E4
+PD100    =    $E6
+PD10     =    $E8
+PD1      =    $EA
+                         ;
+TOPTIM   =    $A0
+BOTTIM   =    $A0
+                         ;
+BLACK    =    0

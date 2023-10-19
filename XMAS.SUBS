@@ -1,0 +1,203 @@
+* XMAS.SUBS LAST EDIT: 8/10/83
+*.....SCORE.....
+*FUNCTION   SCORE DISPLAYS A & DIGIT SCORE
+*
+SCORE
+         STA  ATWAIT
+         LDX  #BLACK
+         STX  ATSCOL
+         LDA  #3
+         STA  ATWAIT
+         STA  ATACTL     ;1X 3C 8S
+         STA  ATBCTL
+         STA  ATASEL     ;GET READY TO LOAD OUTER BUFF
+         StA  ATBSEL
+*ADJ INCR SO SPRITES ARE SIDE BY SIDE
+         LDA #$10
+         STA ATSAIN
+         ASL
+         STA ATSBIN
+         NOP
+         NOP
+         NOP
+         NOP
+         NOP
+         NOP
+         NOP
+         STA  ATSALA     ;LATCH sPRITE A
+         STA  ATSBLA     ;B 9 PIXLES LATER
+         STA  ATWAIT
+         STA  ATMVIN     ;MOVE FINE INCR
+                         ;
+         LDA  #7
+         STA  TEMP1      ;LINE COUNT
+*ACTUAL PAINTING OF DIGITS
+SC4
+         LDY  TEMP1
+         LDA  (PD100K),Y ;GET 100K DATA
+         STA  ATADAT     ;WRITE TO OUTER BUFF (UNSEEN)
+         STA  ATWAIT
+         LDA  (PD10K),Y  ;GET 10K DATA
+         STA  ATBDAT     ;TO OUTER BUFF (100K SEEN NOW)
+         LDA  (PD1K),Y   ;GET 1K DATA
+         STA  ATADAT     ;TO BUFFER (10K SEEN NOW)
+         LDA  (PD10O),Y  ;GET 100'S DATA
+         STA  TEMP2      ;TUCK AWAY
+         LDA  (PD10),Y   ;GET 10'S DATA
+         TAX             ;TUCK AWAY IH X
+         LDA  (PD1),Y    ;1'S DATA
+         TAY             ;SAVE IT FOR TIME CRITICAL
+         LDA  TEMPS      ;RETRIEVE 100'S DATA
+         STA  ATBDAT     ;100 TO BUFF, 1K SEEN
+         STX  ATADAT     ;10 TO BUFF, 100 SEEN NOW
+         STA  ATBDAT     ;1 TO BUFF, 10 SEEN NOW
+         STY  ATADAT     ;DUMMY WRITE TO BUFF,1 SEEN NOW
+         DEC  TEMP1      ;LINE COUNT
+         BPL  SC4        ;LOOPTILL DONE 
+*
+*SET CONTROL AND DATA REGS
+         LDA  #0
+         STA  ATACTL
+         STA  ATROCTL
+         STA  ATASEI
+         STA  ATESEL
+         STA  ATADAT
+         STA  ATBDAT
+         RTS
+*/  SOUNDS + MUSIC HANDLER-->
+                         ;
+*******************************
+* PROCESS 2-PART HARMONY MUSIC-->
+********************************
+* RTN USES 6 RAM BYTES:
+*  ADUR,BDUR,MDUR
+*  AIDX,BIDX,MIDX
+*
+* MAIN SOUND RAM = ADUR,AIDX.
+* MAIN MUSIC RAM = MDUR,MIDX.
+* 
+* IF IDX = MINUS = MUSIC.
+*    IDX = PLUS  = SOUND.
+*    DUR = MINUS = NO SOUND.
+*    DUR = EQUAL = TIME TO UPDATE NOTE,IDX + DUR.
+* IF MDUR IS PLUS, THEN MUSIC WILL
+*  BE PLAYED ON CHANNEL B.
+* IF MDUR IS PLUS + ADUR IS PLUS,
+*  THEN MUSIC WILL BE PLAYED ON CHANNEL B,
+*    AND SOUND WILL BE PLAYED ON CHANNEL A.
+* ELSE IF MDUR IS PLUS + ADUR IS MINUS (OFF),
+*   MUSIC WILL BE PLAYED ON BOTH CHANNELS.
+* IF MDUR IS MINUS, THEN BOTH CHANNELS
+*  ARE ELIGIBLE FOR A SOUND EFFECT.
+*
+********************************
+MUSIC
+         LDX  #1
+         LDA  BDUR, X    ;CHK MDUR 1ST (MAIN MUSIC CHANNEL)
+         BMI  SOUND      ;JP IF NO MUSIC AT ALL.
+MUS10
+         LDA  BDUR, X
+         BNE  MUGSO      ;JP NOTE NOT DONE YET.
+         LDY  BIDX,X     ;GET IDX TO NOTE TBL.
+         BPL  SOUND      ;JP IF IDX IS FOR A SND,NOT MUSIC.
+         LDA  SNDTBL,Y
+         BNE  MUSZ0      ;JP SONG NOT ALL DONE.
+                         ;TURN OFF SOUND FOR BOTH CHANNELS->
+         STA  ATAVOL
+         STA  ATBVOL
+         LDA  #$FF
+         STA  MDUR
+         STA  ADUR
+         STA  BDUR       ;FLAG FOR NO SND.
+         JMP  SND99
+MUS20
+         STA  ATADIV,X   ;NEW DIV.
+         LSR
+         LSR
+         LSR
+         LSR
+         LSR
+         TAY
+         LDA  TIMTBL,Y
+         STA  BDUR,X     ;SV NEW FRAME DURATION.
+         INC  BIDX,X     ;UP NOTE PTR.
+MUS50
+         DEC  BDUR,X     ;DEC NOTE DURATION,
+         LDA  #12
+         STA  ATAVOL,X
+         LDA  #4
+         STA  ATAWAV, X
+         DEX
+         BPL  MUS10      ;JP IF HAVEN’T DONE BOTH CHANNELS.
+* MUSIC PROCESSING ALL DONE.
+* NOW TEST IF THERE IS A SOUND OJ
+* 1 CHANNEL INSTEAD OF MUSIC-->
+********************************
+         INX             ;X=0.
+                         ;
+                         ;
+* PROCESS SOUND EFFECTS-->
+********************************
+SOUND
+         LDA  ADUR, X
+         BMI  SND8S      ;JP NO SND ON THIS CHANNEL.
+                         ;CHANGE SOUND NOTE-->
+         LDY  AIDX,X
+         BMI  SND85      ;JP IF IDX IS FOR MUSIC,NOT SND.
+         LDA  SNDTBL,Y
+         STA  ATAVOL,X   ;NEW VOL.
+         BNE  SND44      ;JP SOUND NOT ALL DONE.
+                         ;SHUT UP-->
+         LDA  #4$FF
+         STA  ADUR,X     ;FLAG FOR SND OFF.
+         JMP  SND85
+* SET UP FOR NEXT "NOTE" OF SOUND-->
+SND44
+         LSR
+         LSR
+         LSR
+         LSR
+         STA  ATAWAV,X   ;NEW SND VOL.
+         LDA  SNDTBL+1,Y
+         STA  ATADIV,X   ;NEW SND FREQ.
+         LDA  ADUR,X
+         BNE  SND80      ;JP NOT THIS NOTES LAST FRAME.
+                         ;UPD SND DUR+IDX->
+         INC  AIDX,X
+         INC  AIDX,X
+         LDA  SNDTBL+1,Y
+         LSR
+         LSR
+         LSR
+         LSR
+         LSR
+         STA  ADUR, X    ;SET UP SND DUR.
+SND80
+         DEC  ADUR, X    ;DEC SND DUR.
+                         ;
+SND85
+         DEX
+         BPL  SOUVP      ;JP BOTH CHANNELS NOT DONE YET.
+SND99
+         RTS
+                         ;
+* NUM FRAMES TO LEAVE NOTES ON->
+TIMTBL   DFB  9,18,108
+         OBJ  $8104
+         ORG  $2100
+                         ;
+SNDTBL
+         OBJ  $8184
+         ORG  $2180
+MAZEB
+         DFB  $60        ;108 FRAMES OF SILENCE.
+MAZEA
+         DFB  $3D,$37,$3D,$33,$3D,$2E,$0F,$11,$13,$11,$13,$16,$17
+         DFB  $16,$17,$1A,$3D,$37,$38,$37,$2E,$33,$17,$13,$16
+         DFB  $13,$17,$13,$16,$13,$17,$13,$16,$13,$1D,$17,$1A
+         DFB  $17,$1D,$17,$1A,$17,$1A,$17,$3D,0
+                         ;
+RNDOVR
+         DFB  $0E,$0F,$2E,$33,$37,$33,$1D,$1A,$1D,$1F
+         DFB  $3D,$33,$37,$33,$1D,$13,$1A,$13,$17,$13
+         DFB  $16,$13,$17,$13,*1A,$13,$1D,0

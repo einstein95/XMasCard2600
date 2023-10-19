@@ -1,0 +1,30 @@
+*/ XMAS.CARD LASTED 8/10/83
+********************************
+                         ;
+         ORG  $2FFC
+         DA   $3000
+         DA   END
+                         ;
+         PUT  XMAS.EQU
+                         ;
+                         ;
+                         ;
+                         ;
+                         ;
+         PUT  XMAS.INIT
+                         ;
+         PUT  XMAS.VINT
+                         ;
+         PUT  XMAS.TOPVI
+                         ;
+         PUT  XMAS.DISPLAY
+                         ;
+         PUT XMAS.BOTVI
+                         ;
+         OBJ  $8604
+         ORG  $3600
+         PUT  XMAS.SUBS
+                         ;
+         OBJ  $8904
+         ORG  $3900
+         PUT XMAS.DATA

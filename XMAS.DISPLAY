@@ -1,0 +1,82 @@
+*/ XMAS CARD LASTED:8/10/83
+********************************
+         LDA #0
+         STA ATSCOL
+         STA ATWAIT
+         STA ATBLNK
+                         ;
+         LDA #$D8
+         STA ATACOL
+         STA ATBCOL
+                         ;
+                         ;
+         LDY #25
+DLAY
+         STA ATWAIT
+         DEY
+         BNE DLAY
+                         ;
+* POS TREES
+********************************
+         STA ATWAIT
+         LDY %5
+POSA
+         DEY
+         BPL  POSA
+         STA  ATSALA
+         STA  ATSBLA
+                         ;
+         LDA  #6
+         STA  ATACTL
+         STA  ATBCTL
+         LDA  #$F0
+         STA  ATSAIN
+         STA  ATWALT
+         STA  ATMVIN
+                         ;
+                         ;
+* PAINT XMAS TREE'S-->
+********************************
+         LDY  #25
+PTREE
+         STA  ATWAIT
+         LDA  TREEL,Y
+         STA  ATADAT
+         LDA  TREER,Y
+         STA  ATBDAT
+         DEY
+         BPL  PTREE
+                         ;
+* PAINT A MESSAGE-->
+********************************
+                         ;
+         LDA  #>WORDS
+         LDX  #<MERRY
+         JSR  SPRIT6
+         JSR  SCORE
+                         ;
+         LDY  #125
+DLAY2
+         STA  ATWAIT
+         DEY
+         BPL  DLAY2
+         JMP  ENDPIC
+                         ;
+SPRIT6
+         STA  TEMP1
+         LDA  #>WORDS
+         STA  TEMP2
+         STX  TEMP3
+         LDY  #5
+         LDX  #11
+SPR6
+         LDA  TEMP3
+         STA  PD100K,X
+         DEX
+         LDA  (TEMP1),Y
+         STA  PD100K,X
+         DEX
+         DEY
+         BPL SPR&
+         RTS
+                         ;

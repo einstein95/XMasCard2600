@@ -1,0 +1,125 @@
+*/ XMAS CARD DATA
+********************************
+                         ;
+TREER
+         DFB  $00,$80,$80,$80,$80
+         DFB  $FF,$FE,$FC,$F8,$F0
+         DFB  $E0,$F8,$F0,$E0,$C0
+         DFB  $80,$E0,$C0,$80,$80
+         DFB  0,0,0,0,0,0
+                         ;
+TREEL
+         DFB  $00,$01,$01,$01,$01
+         DFB  $FF,$7F,$3F,$1F,$0F
+         DFB  $07,$1F,$0F,$07,$03
+         DFB  $01,$07,$03,$01,$01
+         DFB  0,0,0,0,0,0
+                         ;
+                         ;
+WORDS
+MERRY
+         DFB  <LETM,<LETE,<LETR,<LETR,<LETY,<NULL
+XMAS
+         DFB  <NULL
+                         ;
+FROM
+         DFB  <NULL,<LETF,<LETR,<LETO,<LETM,<NULL
+                         ;
+INDIV
+         DFB  <NULL
+                         ;
+*/LETTER TBLS LASTED 7/29/83
+                         ;
+DATA2
+LETTRS
+LETF
+LETY
+LETM
+         DFB  0,$41,$41,$41,$49,$55,$63,$41
+*  LETTER "R"
+LETR
+         DFB  0,$43,$46,$4C,$7E,$41,$41,$7E
+* REVERSE 'R'
+REVR
+         DFB  0,$FF-$43,$FF-$46
+         DFB  $FF-$4C,$FF-$7E
+         DFB  $FF-$41,$FF-$41
+         DFB  $FF-$7E
+*  SMALL "R"
+SMLR
+         DFB  0,$40,$40,$40,$48,$78,$40,0
+* LETTER "P"
+LETP
+         DFB  0,$78,$44,$44,$44,$44,$44,$78
+* LETTER "E"
+LETE
+         DFB  0,$7E,$40,$40,$78,$40,$40,$71
+* REVERSE 'E'
+REVE
+         DFB  0,$FF-$7E,$FF-$40
+         DFB  $FF-$40,$FF-$78
+         DFB  $FF-$40,$FF-$40
+         DFB  $FF-$7E
+* LETTER "X"
+LETX
+         DFB  0,$41,$22,$14,$08,$14,$22,$41
+* REVERSE 'X'
+REVX
+         DFB  0,$FF-$41,$FF-$22
+         DFB  $FF-$14,$FF-$08
+         DFB  $FF-$14,$FF-$22
+         DFB  $FF-$41
+* LETTER "T"
+LETT
+         DFB  0,$08,$08,$08,$08,$08,$08,$7F
+* REVERSE "T"
+REVT
+         DFB  0,$FF-$08
+         DFB  $FF-$08,$FF-$08
+         DFB  $FF-$08,$FF-$08
+         DFB  $FF-$7F,$FF
+* LETTER "A"
+LETA
+         DFB  0,$44,$44,$44,$7C,$44,$28,$10
+* REVERSE 'A'
+REVA
+         DFB  0,$FF-$44,$FF-$44
+         DFB  $FF-$44,$FF-$7C
+         DFB  $FF-$44,$FF-$28
+         DFB  $FF-$10
+                         ;
+* LETTER "C"
+LETC
+         DFB  0,$7F,$40,$40,$40,$40,$40,$7F
+* LETTER "L"
+LETL
+         DFB  0,$7F,$40,$40,$40,$40,$40,$40
+* LETTER "O"
+LETO
+         DFB  0,$7F,$41,$41,$41,$41,$41,$7F
+* LETTERS FOR THE WORD "PRESENTS"
+********************************
+LPR
+         DFB  0,$84,$85,$86,$F7,$94,$94,$F7
+LE2
+         DFB  0,$B9,$20,$20,$E9,$A1,$A1,$BD
+LSE
+         DFB  0,$EF,$28,$28,$EE,$08,$08,$EF
+LN
+         DFB  0,$44,$4C,$4C,$54,$54,$64,$45
+LTS
+         DFB  0,$47,$40,$40,$47,$44,$44,$F7
+LS
+         DFB  0,$C0,$40,$40,$C0,$00,$00,$C0
+                         ;
+NULL     DFB  0,0,0,0,0,0,0,0,0,0
+* LETTER "G"
+********************************
+LETG
+         DFB  $00,$7C,$84,$8E,$80,$80,$84,$7C,0
+* LETTER "V"
+********************************                                ' '
+LETV
+         DFB  0,$0C,$0C,$12,$12,$21,$21,$21
+                         ;
+                         ;

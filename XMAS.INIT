@@ -1,0 +1,13 @@
+*/ XMAS.INIT
+********************************
+                         ;
+         SEI
+         CLD
+         LDX  #0
+         TXA
+CLRAM
+         STA  0,X
+         TXS
+         INX
+         BNE  CLRAM
+                         ;
