@@ -19,7 +19,7 @@
                          ;
          PUT  XMAS.DISPLAY
                          ;
-         PUT XMAS.BOTVI
+         PUT  XMAS.BOTVI
                          ;
          OBJ  $8604
          ORG  $3600
@@ -27,4 +27,4 @@
                          ;
          OBJ  $8904
          ORG  $3900
-         PUT XMAS.DATA
+         PUT  XMAS.DATA

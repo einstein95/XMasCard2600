@@ -11,7 +11,7 @@ SCORE
          STA  ATACTL     ;1X 3C 8S
          STA  ATBCTL
          STA  ATASEL     ;GET READY TO LOAD OUTER BUFF
-         StA  ATBSEL
+         STA  ATBSEL
 *ADJ INCR SO SPRITES ARE SIDE BY SIDE
          LDA #$10
          STA ATSAIN
@@ -24,7 +24,7 @@ SCORE
          NOP
          NOP
          NOP
-         STA  ATSALA     ;LATCH sPRITE A
+         STA  ATSALA     ;LATCH SPRITE A
          STA  ATSBLA     ;B 9 PIXLES LATER
          STA  ATWAIT
          STA  ATMVIN     ;MOVE FINE INCR
@@ -140,7 +140,7 @@ MUS50
 ********************************
 SOUND
          LDA  ADUR, X
-         BMI  SND8S      ;JP NO SND ON THIS CHANNEL.
+         BMI  SND85      ;JP NO SND ON THIS CHANNEL.
                          ;CHANGE SOUND NOTE-->
          LDY  AIDX,X
          BMI  SND85      ;JP IF IDX IS FOR MUSIC,NOT SND.
@@ -148,7 +148,7 @@ SOUND
          STA  ATAVOL,X   ;NEW VOL.
          BNE  SND44      ;JP SOUND NOT ALL DONE.
                          ;SHUT UP-->
-         LDA  #4$FF
+         LDA  #$FF
          STA  ADUR,X     ;FLAG FOR SND OFF.
          JMP  SND85
 * SET UP FOR NEXT "NOTE" OF SOUND-->
@@ -200,4 +200,4 @@ MAZEA
 RNDOVR
          DFB  $0E,$0F,$2E,$33,$37,$33,$1D,$1A,$1D,$1F
          DFB  $3D,$33,$37,$33,$1D,$13,$1A,$13,$17,$13
-         DFB  $16,$13,$17,$13,*1A,$13,$1D,0
+         DFB  $16,$13,$17,$13,$1A,$13,$1D,0

@@ -19,7 +19,7 @@ DLAY
 * POS TREES
 ********************************
          STA ATWAIT
-         LDY %5
+         LDY #5
 POSA
          DEY
          BPL  POSA
@@ -77,6 +77,6 @@ SPR6
          STA  PD100K,X
          DEX
          DEY
-         BPL SPR&
+         BPL  SPR6
          RTS
                          ;
